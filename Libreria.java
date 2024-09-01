@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
 public class Libreria {
-    // una libreria organizada como una matriz cada celda contiene un objeto libro
-    // con los siguientes atributos: titulo, autor, precio escribe una algoritmo con
-    // el precio mas algoritmo
-    String titulo = "";
-    String autor = "";
-    double precio = 0.0;
-    Scanner sc = new Scanner(System.in);
+    private String titulo, autor;
+    private double precio;
+    Scanner entrada = new Scanner(System.in);
+
+    public Libreria() {
+        super();
+    }
 
     public String getTitulo() {
         return titulo;
@@ -33,54 +33,68 @@ public class Libreria {
         this.precio = precio;
     }
 
-    public Libreria() {
-        this.titulo = "";
-        this.autor = "";
-        this.precio = 0.0;
-    }
 
-    public void EjecutarPunto3() {
-        int cant = 0;
-        System.out.println("Ingrese la cantidad de registros");
-        cant = sc.nextInt();
-        Libreria[][] matriz = new Libreria[cant][cant];
-        Libreria li = new Libreria();
-        double precioMayor = 0;
-        matriz = li.LlenarMatriz(cant);
-        precioMayor = li.PrecioMayor(matriz);
-        System.out.println("el libro mas costoso es: " + precioMayor);
-
-    }
-
-    public Libreria[][] LlenarMatriz(int cant) {
-        Libreria[][] matriz = new Libreria[cant][cant];
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz.length; j++) {
-                Libreria li = new Libreria();
-                System.out.println("Ingrese titulo");
-                li.setTitulo(sc.next());
-                System.out.println("Ingrese Autor");
-                li.setAutor(sc.next());
-                System.out.println("Ingrese el precio");
-                li.setPrecio(sc.nextDouble());
-                matriz[i][j] = li;
+    // Método que recibe datos de entrada y llena la matriz Libreria ...
+    public Libreria[][] llenarMatrizLibreria(int dim) {
+        Libreria[][] matrizL = new Libreria[dim][dim];
+        for (int i = 0; i < matrizL.length; i++) {
+            for (int j = 0; j < matrizL.length; j++) {
+                Libreria info = new Libreria();
+                System.out.print("\nIngrese el título del libro: ");
+                info.setTitulo(entrada.next());
+                System.out.print("Ingrese el autor del libro: ");
+                info.setAutor(entrada.next());
+                System.out.print("Ingrese el precio del libro: ");
+                info.setPrecio(entrada.nextDouble());
+                matrizL[i][j] = info;
             }
         }
-        return matriz;
+        return matrizL;
     }
 
-    public double PrecioMayor(Libreria[][] matriz) {
-        double mayorValor = 0.0;
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][j].getPrecio() > mayorValor) {
-                    mayorValor = matriz[i][j].getPrecio();
-                }
+    // Método que imprime el libro más caro con sus características ...
+    public void encontrarLibroCaro(Libreria[][] matrizSearch){
+        double precioC = 0;
+        Libreria libroCaro = new Libreria();
 
+        for (int i = 0; i < matrizSearch.length; i++) {
+            for (int j = 0; j < matrizSearch.length; j++) {
+               if(matrizSearch[i][j].getPrecio() > precioC){
+                precioC = matrizSearch[i][j].getPrecio();
+                libroCaro = matrizSearch[i][j];
+               }
             }
         }
-        return mayorValor;
 
+        System.out.println("\nEl libro más caro es: ");
+        System.out.println("\nTitulo: " + libroCaro.getTitulo());
+        System.out.println("Autor: " + libroCaro.getAutor());
+        System.out.println("Precio: " + libroCaro.getPrecio());
     }
 
+    // Método que imprime y muestra los registros de la matriz ...
+    public void mostrarMatrizLibreria(Libreria[][] matrizLib) {
+        for (int i = 0; i < matrizLib.length; i++) {
+            for (int j = 0; j < matrizLib.length; j++) {
+                System.out.println("Libro: " + matrizLib[i][j].getTitulo());
+                System.out.println("Autor: " + matrizLib[i][j].getAutor());
+                System.out.println("Precio: " + matrizLib[i][j].getPrecio());
+            }
+            System.out.println("");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        System.out.print("\nIngrese la dimensión de la matriz Libreria: ");
+        int dim = entrada.nextInt();
+        Libreria[][] matrizLibreria = new Libreria[dim][dim];
+        Libreria gabo = new Libreria();
+
+        matrizLibreria = gabo.llenarMatrizLibreria(dim);
+        gabo.mostrarMatrizLibreria(matrizLibreria);
+        gabo.encontrarLibroCaro(matrizLibreria);
+    }
+
+    
 }
